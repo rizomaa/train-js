@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Asynchronous JavaScript</title>
+</head>
+<body>
+    <h1>Asynchronous JavaScript</h1>
+    <script>
+        
+        
+        function getWeather(woeid) { //weather of earth ID
+            fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`)
+                .then(result => {
+                    //console.log(result);
+                    return result.json();
+                })
+                .then(data => {
+
+                    const tomorrow = data.consolidated_weather[1];
+                    //processWeather(tomorrow);//we can put processing on other function!!!
+                    console.log(`Заўтра ў ${data.title} будзе максімум ${tomorrow.max_temp}, але можа быць ды-ды-ды ${tomorrow.min_temp}`);
+
+                    //return today;
+                })
+                .catch(error => console.log(error));
+        }
+        
+        function processWeather(tomorrow) {
+            console.log(`Заўтра будзе максімум ${tomorrow.max_temp}, але можа быць ды-ды-ды ${tomorrow.min_temp}`);
+        }
+        
+        getWeather(834463); // Minsk
+        getWeather(44418); // London
+        
+        async function getWeatherAW(woeid) {
+            
+            try {
+                const result = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`);
+                const data = await result.json();
+                //console.log(data);
+                const tomorrow = data.consolidated_weather[1];
+            gitprocessWeather(tomorrow);//we can put processing on other function!!!
+                //console.log(`Заўтра ў ${data.title} будзе максімум ${tomorrow.max_temp}, але можа быць ды-ды-ды ${tomorrow.min_temp}`);    
+                return data;
+            } catch(error) {
+                //console.log(error);
+                //alert(error);
+            }
+            
+
+        }
+        getWeatherAW(44418); // london
+        let minskForecast;
+        getWeatherAW(834463).then(result => {
+            minskForecast = result;
+            console.log(minskForecast);
+        }); // Minsk
+        
+        
+        
+    </script>
+</body>
+</html>
